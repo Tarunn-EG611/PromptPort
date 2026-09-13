@@ -89,7 +89,7 @@ public class DataSeeder implements CommandLineRunner {
 
         category.setName(name);
         category.setSlug(
-                name.toLowerCase()
+                name.toLowerCase(java.util.Locale.ROOT)
                         .replace(" ", "-")
         );
         category.setTemplateCount(0);

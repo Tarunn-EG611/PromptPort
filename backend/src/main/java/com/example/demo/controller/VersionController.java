@@ -22,7 +22,7 @@ public class VersionController {
     }
 
     @PostMapping("/template/{templateId}")
-    @PreAuthorize("hasAnyAuthority('PROMPT_ENGINEER','TEAM_LEAD')")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<PromptVersion> createVersion(
             @PathVariable Long templateId,
             @Valid @RequestBody VersionRequestDto dto,
@@ -31,6 +31,16 @@ public class VersionController {
         return ResponseEntity.ok(
                 versionService.createVersion(templateId, dto, principal.getName())
         );
+    }
+
+    @DeleteMapping("/{versionId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<Void> deleteVersion(
+            @PathVariable Long versionId,
+            Principal principal) {
+
+        versionService.deleteVersion(versionId, principal.getName());
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/template/{templateId}")

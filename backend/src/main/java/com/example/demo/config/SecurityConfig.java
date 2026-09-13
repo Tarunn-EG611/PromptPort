@@ -32,7 +32,11 @@ public class SecurityConfig {
             throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())
+                // API is stateless (JWT via Authorization header) — CSRF tokens are
+                // required only for state-changing endpoints; auth endpoints are excluded.
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
+                )
 
                 .cors(cors ->
                         cors.configurationSource(corsConfigurationSource())

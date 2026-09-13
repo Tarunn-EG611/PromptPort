@@ -25,10 +25,12 @@ public class PromptTemplate {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "password", "collections", "role"})
     private SystemUser creator;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private PromptCategory category;
 
     @Column(name = "is_public")
@@ -36,6 +38,7 @@ public class PromptTemplate {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "fork_source_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "versions", "creator", "category", "forkSource"})
     private PromptTemplate forkSource;
 
     @Column(name = "created_at")

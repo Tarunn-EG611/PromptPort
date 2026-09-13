@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login, reset } from '../store/slices/authSlice';
 import ErrorHandler from './common/ErrorHandler';
 
@@ -74,6 +74,10 @@ const Login = () => {
           </button>
         </div>
       </form>
+
+      <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.9rem', color: '#64748b' }}>
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
     </section>
   );
 };

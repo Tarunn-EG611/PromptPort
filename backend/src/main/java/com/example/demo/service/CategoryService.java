@@ -35,7 +35,7 @@ public class CategoryService {
     public PromptCategory createCategory(String name) {
         PromptCategory category = new PromptCategory();
         category.setName(name);
-        category.setSlug(name.toLowerCase().replace(" ", "-"));
+        category.setSlug(name.toLowerCase(java.util.Locale.ROOT).replace(" ", "-"));
         category.setTemplateCount(0);
         return categoryRepository.save(category);
     }
@@ -46,7 +46,7 @@ public class CategoryService {
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
         category.setName(name);
-        category.setSlug(name.toLowerCase().replace(" ", "-"));
+        category.setSlug(name.toLowerCase(java.util.Locale.ROOT).replace(" ", "-"));
 
         return categoryRepository.save(category);
     }

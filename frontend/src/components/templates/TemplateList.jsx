@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getPublicTemplates } from '../../store/slices/templateSlice';
+import { getPublicTemplates, reset } from '../../store/slices/templateSlice';
 import TemplateCard from './TemplateCard';
 
 const TemplateList = () => {
@@ -11,6 +11,7 @@ const TemplateList = () => {
   );
 
   useEffect(() => {
+    dispatch(reset());
     dispatch(getPublicTemplates());
   }, [dispatch]);
 

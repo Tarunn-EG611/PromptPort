@@ -19,6 +19,5 @@ public class RegisterDto {
     @NotBlank
     private String email;
 
-    @NotNull
     private Role role;
 }

@@ -157,7 +157,7 @@ const TemplateForm = ({ mode = 'create' }) => {
           </div>
         )}
 
-        {mode === 'create' && user?.role === 'PROMPT_ENGINEER' && (
+        {mode === 'create' && (
           <AIPromptOptimizer
             initialPrompt={initialPromptText}
             onOptimize={onOptimize}

@@ -8,6 +8,7 @@ import TemplateForm from './components/templates/TemplateForm';
 import CollectionList from './components/collections/CollectionList';
 import CategoryManagement from './components/categories/CategoryManagement';
 import Login from './components/Login';
+import Register from './components/Register';
 import './App.css';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/collections" element={<CollectionList />} />
           <Route path="/categories" element={<CategoryManagement />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </main>
     </div>

@@ -26,10 +26,10 @@ PromptPort is a full-stack prompt management application built with a Spring Boo
 
    ```bash
    export DB_URL="jdbc:mysql://localhost:3306/prompt_port"
-   export DB_USERNAME="root"
-   export DB_PASSWORD="your_mysql_password"
-   export JWT_SECRET="your_jwt_secret"
-   export GEMINI_API_KEY="your_gemini_api_key"
+   export DB_USERNAME="<your_db_username>"
+   export DB_PASSWORD="<your_db_password>"
+   export JWT_SECRET="<your_jwt_secret>"
+   export GEMINI_API_KEY="<your_gemini_api_key>"
    ```
 
 3. Run the backend:

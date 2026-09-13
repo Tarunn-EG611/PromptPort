@@ -95,6 +95,18 @@ export const publishVersion = createAsyncThunk(
   }
 );
 
+export const deleteVersion = createAsyncThunk(
+  'templates/deleteVersion',
+  async (versionId, thunkAPI) => {
+    try {
+      await templateService.deleteVersion(versionId);
+      return versionId;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(extractMessage(error));
+    }
+  }
+);
+
 export const templateSlice = createSlice({
   name: 'templates',
   initialState,
@@ -154,10 +166,9 @@ export const templateSlice = createSlice({
       .addCase(createTemplate.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createTemplate.fulfilled, (state, action) => {
+      .addCase(createTemplate.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.templates.push(action.payload);
         state.message = 'PromptTemplate created successfully.';
       })
       .addCase(createTemplate.rejected, (state, action) => {
@@ -213,6 +224,18 @@ export const templateSlice = createSlice({
       })
       .addCase(publishVersion.rejected, (state, action) => {
         state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      // deleteVersion
+      .addCase(deleteVersion.fulfilled, (state, action) => {
+        if (state.currentTemplate && Array.isArray(state.currentTemplate.versions)) {
+          state.currentTemplate.versions = state.currentTemplate.versions.filter(
+            (v) => v.id !== action.payload
+          );
+        }
+      })
+      .addCase(deleteVersion.rejected, (state, action) => {
         state.isError = true;
         state.message = action.payload;
       });

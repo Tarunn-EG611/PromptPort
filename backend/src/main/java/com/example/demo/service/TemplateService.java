@@ -214,11 +214,8 @@ public class TemplateService {
             templateRepository.delete(template);
             templateRepository.flush();
 
-        } catch (Exception e) {
-
-            throw new RuntimeException(
-                    "Could not delete template: " + e.getMessage()
-            );
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Could not delete template: " + e.getMessage(), e);
         }
     }
 }

@@ -29,6 +29,7 @@ const CollectionList = () => {
       ]);
       setCollections(collectionsRes.data);
       setUserTemplates(templatesRes.data);
+      console.log('userTemplates:', templatesRes.data);
     } catch (err) {
       setError(typeof err === 'string' ? err : 'Failed to load collections.');
     } finally {
@@ -51,7 +52,7 @@ const CollectionList = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/collections', { name, capacity, description });
+      await api.post('/collections', { name, maxCapacity: capacity, description });
       setFormData({ name: '', capacity: 10, description: '' });
       setShowForm(false);
       fetchData();
