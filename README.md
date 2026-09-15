@@ -68,14 +68,4 @@ The frontend is configured to call the backend at:
 http://127.0.0.1:8080/api
 ```
 
-## Notes
 
-This project is intended to be a portfolio-ready application for demonstration purposes. Before pushing to a public GitHub repository, make sure:
-
-- no real secrets or credentials remain in the codebase
-- the database config is set via environment variables
-- you review the app and remove any placeholder or debug content
-
-## License
-
-This project is for demonstration and portfolio use.
