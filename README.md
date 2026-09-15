@@ -162,14 +162,4 @@ http://127.0.0.1:8080/api
 | DELETE | /api/categories/{id}            | TEAM_LEAD    | Delete a category                  |
 | POST   | /api/ai/optimize                | Authenticated| Optimize a prompt with Gemini AI   |
 
-## Security Notes
 
-Before pushing to a public repository:
-
-- Do not commit real credentials to `application.properties`
-- Set all secrets via environment variables
-- The default JWT secret in `application.properties` should be replaced with a strong random base64-encoded value in production
-
-## License
-
-This project is for demonstration and portfolio use.
