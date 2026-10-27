@@ -13,10 +13,10 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <groupId>com.promptport</groupId>
+    <artifactId>promptport</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
+    <name>promptport</name>
 
     <properties>
         <java.version>17</java.version>

@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.dto.AuthRequestDto;
 import com.example.demo.dto.AuthResponseDto;
 import com.example.demo.dto.RegisterDto;
+import com.example.demo.entity.Role;
 import com.example.demo.entity.SystemUser;
 import com.example.demo.repository.SystemUserRepository;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class AuthService {
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
         user.setPasswordHash(passwordEncoder.encode(dto.getPassword()));
-        user.setRole(dto.getRole());
+        user.setRole(dto.getRole() != null ? dto.getRole() : Role.PROMPT_ENGINEER);
 
         user = userRepository.save(user);
 
@@ -62,15 +63,19 @@ public class AuthService {
 
     public AuthResponseDto login(AuthRequestDto dto) {
 
+        SystemUser user = userRepository.findByUsername(dto.getUsername())
+                .orElseThrow(() -> new RuntimeException("Username not found"));
+
+        if (!passwordEncoder.matches(dto.getPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Invalid password");
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         dto.getUsername(),
                         dto.getPassword()
                 )
         );
-
-        SystemUser user = userRepository.findByUsername(dto.getUsername())
-                .orElseThrow(() -> new RuntimeException("User not found"));
 
         User userDetails = new User(
                 user.getUsername(),

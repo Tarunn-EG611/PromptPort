@@ -5,11 +5,6 @@ const getAllCategories = async () => {
   return response.data;
 };
 
-const rebuildStats = async (categoryId) => {
-  const response = await api.post(`/categories/${categoryId}/rebuild-stats`);
-  return response.data;
-};
-
-const categoryService = { getAllCategories, rebuildStats };
+const categoryService = { getAllCategories };
 
 export default categoryService;

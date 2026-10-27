@@ -20,7 +20,7 @@ public class PromptCollection {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "owner_id", nullable = false)
     private SystemUser owner;
 
@@ -28,7 +28,7 @@ public class PromptCollection {
 
     private Integer maxCapacity = 50;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "collection_prompts",
         joinColumns = @JoinColumn(name = "collection_id"),

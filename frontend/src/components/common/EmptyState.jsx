@@ -3,10 +3,10 @@ import React from 'react';
 const EmptyState = ({ message, actionText, onAction }) => {
   return (
     <div className="empty-state">
-      <span role="img" aria-label="empty">📁</span>
+      <div className="empty-state-icon">📂</div>
       <p>{message || 'No prompts found in the library.'}</p>
       {actionText && (
-        <button className="btn-primary" onClick={onAction}>
+        <button className="btn-primary" onClick={onAction} style={{ marginTop: '8px' }}>
           {actionText}
         </button>
       )}

@@ -23,19 +23,22 @@ public class PromptTemplate {
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "creator_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "password", "collections", "role"})
     private SystemUser creator;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private PromptCategory category;
 
     @Column(name = "is_public")
     private Boolean isPublic = false;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fork_source_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "versions", "creator", "category", "forkSource"})
     private PromptTemplate forkSource;
 
     @Column(name = "created_at")
@@ -43,7 +46,7 @@ public class PromptTemplate {
 
     @OneToMany(mappedBy = "template",
                cascade = CascadeType.ALL,
-               fetch = FetchType.LAZY)
+               fetch = FetchType.EAGER)
     @JsonIgnoreProperties("template")
     private List<PromptVersion> versions = new ArrayList<>();
 }

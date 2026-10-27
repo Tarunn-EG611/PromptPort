@@ -66,23 +66,33 @@ const CategoryManagement = () => {
   };
 
   if (isLoading) {
-    return <div className="loading">Loading categories...</div>;
+    return (
+      <div className="loading">
+        <span className="spinner" style={{ width: '28px', height: '28px', borderWidth: '3px' }} />
+        <span>Loading categories...</span>
+      </div>
+    );
   }
 
   return (
     <div className="category-management-container">
-      <h1>Category Management</h1>
+      <div style={{ marginBottom: '24px' }}>
+        <h1>Category Management</h1>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+          Create and organize taxonomy tags for prompt discovery across the platform.
+        </p>
+      </div>
 
       <form onSubmit={onSubmit} className="category-form">
         <input
           type="text"
-          placeholder="Category Name (e.g. Finance, Healthcare)"
+          placeholder="Category Name (e.g. Finance, Healthcare, Creative Writing)"
           value={name}
           onChange={onChange}
           required
         />
         <button type="submit" className="btn-primary">
-          {editingCat ? 'Update' : 'Add Category'}
+          {editingCat ? 'Update Category' : '+ Add Category'}
         </button>
         {editingCat && (
           <button type="button" className="btn-secondary" onClick={onCancelEdit}>
@@ -91,35 +101,43 @@ const CategoryManagement = () => {
         )}
       </form>
 
-      <table className="category-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Slug</th>
-            <th>Templates</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((cat) => (
-            <tr key={cat.id}>
-              <td>{cat.id}</td>
-              <td>{cat.name}</td>
-              <td><code>{cat.slug}</code></td>
-              <td>{cat.templateCount || 0}</td>
-              <td>
-                <button className="btn-edit" onClick={() => onEdit(cat)}>
-                  Edit
-                </button>
-                <button className="btn-delete" onClick={() => onDelete(cat.id)}>
-                  Delete
-                </button>
-              </td>
+      <div className="table-wrapper">
+        <table className="category-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Category Name</th>
+              <th>Slug</th>
+              <th>Templates</th>
+              <th>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {categories.map((cat) => (
+              <tr key={cat.id}>
+                <td style={{ color: 'var(--text-secondary)' }}>#{cat.id}</td>
+                <td>
+                  <span style={{ fontWeight: '600' }}>{cat.name}</span>
+                </td>
+                <td>
+                  <code>{cat.slug}</code>
+                </td>
+                <td>
+                  <span className="section-badge">{cat.templateCount || 0} prompts</span>
+                </td>
+                <td>
+                  <button className="btn-edit" onClick={() => onEdit(cat)}>
+                    Edit
+                  </button>
+                  <button className="btn-delete" onClick={() => onDelete(cat.id)}>
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

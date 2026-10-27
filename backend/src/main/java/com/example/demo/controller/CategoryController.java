@@ -25,12 +25,6 @@ public class CategoryController {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
 
-    @PostMapping("/{id}/rebuild-stats")
-    public ResponseEntity<Void> rebuildStats(@PathVariable Long id) {
-        categoryService.rebuildStats(id);
-        return ResponseEntity.ok().build();
-    }
-
     @PreAuthorize("hasAuthority('TEAM_LEAD')")
     @PostMapping
     public ResponseEntity<PromptCategory> createCategory(

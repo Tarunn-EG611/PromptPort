@@ -7,7 +7,8 @@ const ErrorHandler = ({ error }) => {
 
   return (
     <div className="error-handler">
-      <p>{error}</p>
+      <span style={{ fontSize: '1.1rem' }}>⚠️</span>
+      <span>{error}</span>
     </div>
   );
 };

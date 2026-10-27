@@ -48,8 +48,6 @@ function getSafeApi() {
     const instance = axios.create({ baseURL: BASE_URL });
     return attachInterceptors(instance);
   } catch (e) {
-    // Fallback to base axios if instance creation fails, ensuring
-    // interceptors and HTTP methods always exist.
     const fallback = axios;
     fallback.defaults.baseURL = BASE_URL;
     if (!fallback.interceptors) {

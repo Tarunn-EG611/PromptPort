@@ -3,9 +3,11 @@ package com.example.demo.service;
 import com.example.demo.dto.VersionRequestDto;
 import com.example.demo.entity.PromptTemplate;
 import com.example.demo.entity.PromptVersion;
+import com.example.demo.entity.Role;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.PromptTemplateRepository;
 import com.example.demo.repository.PromptVersionRepository;
+import com.example.demo.repository.SystemUserRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,14 @@ public class VersionService {
 
     private final PromptVersionRepository versionRepository;
     private final PromptTemplateRepository templateRepository;
+    private final SystemUserRepository userRepository;
 
     public VersionService(PromptVersionRepository versionRepository,
-                          PromptTemplateRepository templateRepository) {
+                          PromptTemplateRepository templateRepository,
+                          SystemUserRepository userRepository) {
         this.versionRepository = versionRepository;
         this.templateRepository = templateRepository;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -33,11 +38,6 @@ public class VersionService {
         PromptTemplate template = templateRepository.findById(templateId)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Template not found"));
-
-        if (!template.getCreator().getUsername().equals(username)) {
-            throw new RuntimeException(
-                    "Not authorized to publish version for this template");
-        }
 
         if (versionRepository.existsByTemplateIdAndVersionTag(
                 templateId, dto.getVersionTag())) {
@@ -59,5 +59,24 @@ public class VersionService {
     public List<PromptVersion> getVersionHistory(Long templateId) {
         return versionRepository
                 .findByTemplateIdOrderByCreatedAtDesc(templateId);
+    }
+
+    @Transactional
+    public void deleteVersion(Long versionId, String username) {
+
+        PromptVersion version = versionRepository.findById(versionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Version not found"));
+
+        com.example.demo.entity.SystemUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
+        boolean isCreator = version.getTemplate().getCreator().getUsername().equals(username);
+        boolean isTeamLead = user.getRole() == Role.TEAM_LEAD;
+
+        if (!isCreator && !isTeamLead) {
+            throw new RuntimeException("Not authorized to delete this version");
+        }
+
+        versionRepository.delete(version);
     }
 }

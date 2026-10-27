@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login, reset } from '../store/slices/authSlice';
 import ErrorHandler from './common/ErrorHandler';
 
@@ -40,41 +40,66 @@ const Login = () => {
   };
 
   return (
-    <section className="login-container">
-      <h2>Login to PromptPort</h2>
-
-      {isError && <ErrorHandler error={message} />}
-
-      <form onSubmit={onSubmit}>
-        <div className="form-group">
-          <input
-            type="text"
-            name="username"
-            value={username}
-            placeholder="Username"
-            required
-            onChange={onChange}
-          />
+    <div className="auth-page-wrapper">
+      <section className="login-container">
+        <div className="login-header">
+          <div
+            className="nav-brand-icon"
+            style={{ width: '40px', height: '40px', fontSize: '1.25rem', margin: '0 auto 14px' }}
+          >
+            ⚡
+          </div>
+          <h2>Welcome back</h2>
+          <p className="login-subtitle">Sign in to your PromptPort workspace</p>
         </div>
 
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
-            value={password}
-            placeholder="Password"
-            required
-            onChange={onChange}
-          />
-        </div>
+        {isError && <ErrorHandler error={message} />}
 
-        <div className="form-group">
-          <button type="submit" className="btn-primary" disabled={isLoading}>
-            {isLoading ? 'Logging in…' : 'Login'}
-          </button>
-        </div>
-      </form>
-    </section>
+        <form onSubmit={onSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              name="username"
+              value={username}
+              placeholder="Enter your username"
+              required
+              onChange={onChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              value={password}
+              placeholder="••••••••"
+              required
+              onChange={onChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <button type="submit" className="btn-primary" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <span className="spinner" /> Signing in...
+                </>
+              ) : (
+                'Sign In'
+              )}
+            </button>
+          </div>
+        </form>
+
+        <p className="login-footer">
+          Don't have an account yet? <Link to="/register">Create one here</Link>
+        </p>
+      </section>
+    </div>
   );
 };
 

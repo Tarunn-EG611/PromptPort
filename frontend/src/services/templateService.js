@@ -40,6 +40,10 @@ const publishVersion = async (templateId, versionData) => {
   return response.data;
 };
 
+const deleteVersion = async (versionId) => {
+  await api.delete(`/versions/${versionId}`);
+};
+
 const templateService = {
   getPublicTemplates,
   createTemplate,
@@ -49,6 +53,7 @@ const templateService = {
   getMyTemplates,
   deleteTemplate,
   publishVersion,
+  deleteVersion,
 };
 
 export default templateService;

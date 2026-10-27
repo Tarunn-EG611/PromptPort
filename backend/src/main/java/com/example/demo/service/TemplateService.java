@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,6 +33,32 @@ public class TemplateService {
         this.userRepository = userRepository;
         this.collectionRepository = collectionRepository;
     }
+
+    public Map<String, Object> getAnalytics() {
+        long totalTemplates = templateRepository.count();
+        long publicTemplates = templateRepository.findByIsPublicTrue().size();
+        long totalVersions = versionRepository.count();
+        long totalUsers = userRepository.count();
+        long forkedTemplates = templateRepository.findAll().stream()
+                .filter(t -> t.getForkSource() != null).count();
+
+        Map<String, Long> templatesByCategory = templateRepository.findAll().stream()
+                .collect(Collectors.groupingBy(
+                        t -> t.getCategory().getName(),
+                        Collectors.counting()
+                ));
+
+        return Map.of(
+                "totalTemplates", totalTemplates,
+                "publicTemplates", publicTemplates,
+                "privateTemplates", totalTemplates - publicTemplates,
+                "totalVersions", totalVersions,
+                "totalUsers", totalUsers,
+                "forkedTemplates", forkedTemplates,
+                "templatesByCategory", templatesByCategory
+        );
+    }
+
 
     @Transactional
     public PromptTemplate createTemplate(TemplateRequestDto dto, String username) {
@@ -214,11 +242,8 @@ public class TemplateService {
             templateRepository.delete(template);
             templateRepository.flush();
 
-        } catch (Exception e) {
-
-            throw new RuntimeException(
-                    "Could not delete template: " + e.getMessage()
-            );
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Could not delete template: " + e.getMessage(), e);
         }
     }
 }

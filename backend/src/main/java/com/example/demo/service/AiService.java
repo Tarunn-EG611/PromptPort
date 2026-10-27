@@ -1,11 +1,19 @@
 package com.example.demo.service;
 
+import io.netty.channel.ChannelOption;
+import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.handler.timeout.WriteTimeoutHandler;
+import io.netty.resolver.DefaultAddressResolverGroup;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 import java.time.Duration;
 import java.util.List;
@@ -14,18 +22,34 @@ import java.util.Map;
 @Service
 public class AiService {
 
+    private static final Logger log = LoggerFactory.getLogger(AiService.class);
+
     private static final String GEMINI_PATH =
-            "/v1beta/models/gemini-2.5-flash:generateContent";
+            "/v1beta/models/gemini-2.0-flash:generateContent";
 
     private final WebClient webClient;
 
     @Value("${gemini.api.key}")
     private String googleApiKey;
 
+    @jakarta.annotation.PostConstruct
+    private void logKeyStatus() {
+        log.info("Gemini API key loaded: {}", (googleApiKey == null || googleApiKey.isBlank()) ? "MISSING" : "OK (" + googleApiKey.length() + " chars)");
+    }
+
     public AiService(WebClient.Builder builder) {
+
+        HttpClient httpClient = HttpClient.create()
+                .resolver(DefaultAddressResolverGroup.INSTANCE)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000)
+                .responseTimeout(Duration.ofSeconds(120))
+                .doOnConnected(conn -> conn
+                        .addHandlerLast(new ReadTimeoutHandler(120))
+                        .addHandlerLast(new WriteTimeoutHandler(30)));
 
         this.webClient = builder
                 .baseUrl("https://generativelanguage.googleapis.com")
+                .clientConnector(new ReactorClientHttpConnector(httpClient))
                 .codecs(configurer ->
                         configurer.defaultCodecs()
                                 .maxInMemorySize(2 * 1024 * 1024))
@@ -67,21 +91,23 @@ public class AiService {
                     )
                     .onStatus(
                             HttpStatusCode::is4xxClientError,
-                            clientResponse -> Mono.error(
-                                    new RuntimeException("Client error")
-                            )
+                            clientResponse -> clientResponse.bodyToMono(String.class)
+                                    .flatMap(errorBody -> Mono.error(
+                                            new RuntimeException("Client error: " + errorBody)
+                                    ))
                     )
                     .onStatus(
                             HttpStatusCode::is5xxServerError,
-                            clientResponse -> Mono.error(
-                                    new RuntimeException("Server error")
-                            )
+                            clientResponse -> clientResponse.bodyToMono(String.class)
+                                    .flatMap(errorBody -> Mono.error(
+                                            new RuntimeException("Server error: " + errorBody)
+                                    ))
                     )
                     .bodyToMono(
                             new ParameterizedTypeReference<Map<String, Object>>() {
                             }
                     )
-                    .timeout(Duration.ofSeconds(30))
+                    .timeout(Duration.ofSeconds(120))
                     .block();
 
             String text = extractText(response);
@@ -89,7 +115,11 @@ public class AiService {
             return text == null ? "No response from AI." : text;
 
         } catch (Exception e) {
-            return "Error calling AI: " + e.getMessage();
+            log.error("Error calling Gemini API: {}", e.getClass().getSimpleName(), e);
+            Throwable root = e;
+            while (root.getCause() != null) root = root.getCause();
+            String msg = root.getMessage() != null ? root.getMessage() : root.getClass().getSimpleName();
+            return "Error calling AI: " + msg;
         }
     }
 
@@ -139,7 +169,8 @@ public class AiService {
 
             return text != null ? text.toString() : null;
 
-        } catch (Exception e) {
+        } catch (ClassCastException e) {
+            log.error("Unexpected Gemini response structure", e);
             return null;
         }
     }

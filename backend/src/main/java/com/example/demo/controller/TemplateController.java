@@ -10,7 +10,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,11 +26,11 @@ public class TemplateController {
     @GetMapping("/analytics")
     @PreAuthorize("hasAuthority('TEAM_LEAD')")
     public ResponseEntity<Map<String, Object>> getAnalytics() {
-        return ResponseEntity.ok(new HashMap<>());
+        return ResponseEntity.ok(templateService.getAnalytics());
     }
 
     @PostMapping
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('PROMPT_ENGINEER', 'TEAM_LEAD')")
     public ResponseEntity<String> createTemplate(
             @Valid @RequestBody TemplateRequestDto dto,
             Principal principal) {

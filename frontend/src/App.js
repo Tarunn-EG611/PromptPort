@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Dashboard from './components/dashboard/Dashboard';
@@ -8,9 +8,15 @@ import TemplateForm from './components/templates/TemplateForm';
 import CollectionList from './components/collections/CollectionList';
 import CategoryManagement from './components/categories/CategoryManagement';
 import Login from './components/Login';
+import Register from './components/Register';
 import './App.css';
 
 function App() {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('promptport_theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  }, []);
+
   return (
     <div className="app">
       <Navbar />
@@ -23,6 +29,7 @@ function App() {
           <Route path="/collections" element={<CollectionList />} />
           <Route path="/categories" element={<CategoryManagement />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </main>
     </div>

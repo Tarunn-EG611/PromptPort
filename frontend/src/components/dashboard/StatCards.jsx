@@ -8,31 +8,41 @@ const StatCards = () => {
   const stats = [
     {
       label: 'Public Prompts',
-      value: templates.length || 0,
-      color: '#2563eb',
+      value: templates?.length || 0,
+      icon: '✨',
+      iconBg: 'rgba(99, 102, 241, 0.15)',
+      iconColor: '#6366f1',
     },
     {
       label: 'My Collections',
-      value: collections.length || 0,
-      color: '#10b981',
+      value: collections?.length || 0,
+      icon: '📁',
+      iconBg: 'rgba(16, 185, 129, 0.15)',
+      iconColor: '#10b981',
     },
     {
-      label: 'Categories',
+      label: 'Active Categories',
       value: 5,
-      color: '#f59e0b',
+      icon: '🏷️',
+      iconBg: 'rgba(245, 158, 11, 0.15)',
+      iconColor: '#f59e0b',
     },
   ];
 
   return (
     <div className="stat-cards-container">
       {stats.map((stat) => (
-        <div
-          key={stat.label}
-          className="stat-card"
-          style={{ borderLeft: `4px solid ${stat.color}` }}
-        >
-          <span className="stat-label">{stat.label}</span>
-          <span className="stat-value">{stat.value}</span>
+        <div key={stat.label} className="stat-card">
+          <div className="stat-content">
+            <span className="stat-label">{stat.label}</span>
+            <span className="stat-value">{stat.value}</span>
+          </div>
+          <div
+            className="stat-icon-wrapper"
+            style={{ backgroundColor: stat.iconBg, color: stat.iconColor }}
+          >
+            {stat.icon}
+          </div>
         </div>
       ))}
     </div>

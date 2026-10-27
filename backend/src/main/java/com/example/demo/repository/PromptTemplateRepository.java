@@ -12,13 +12,7 @@ public interface PromptTemplateRepository extends JpaRepository<PromptTemplate, 
 
     List<PromptTemplate> findByCreatorId(Long creatorId);
 
-    static long countByCategoryId(Long categoryId) {
-
-        throw new UnsupportedOperationException("Unimplemented method 'countByCategoryId'");
-    }
+    long countByCategoryId(Long categoryId);
 
     List<PromptTemplate> findByForkSourceId(Long forkSourceId);
-
-    @Query("SELECT p FROM PromptTemplate p WHERE p.isPublic = true")
-    List<PromptTemplate> findAllPublic();
 }

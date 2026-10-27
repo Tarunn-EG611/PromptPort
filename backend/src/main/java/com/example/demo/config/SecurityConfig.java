@@ -32,7 +32,9 @@ public class SecurityConfig {
             throws Exception {
 
         http
-                .csrf(csrf -> csrf.disable())
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/api/**")
+                )
 
                 .cors(cors ->
                         cors.configurationSource(corsConfigurationSource())
@@ -45,14 +47,12 @@ public class SecurityConfig {
                 )
 
                 .authorizeHttpRequests(auth -> auth
-
-                        // Public endpoints
                         .requestMatchers(
                                 "/api/auth/**",
+                                "/api/templates/public",
+                                "/api/categories",
                                 "/error"
                         ).permitAll()
-
-                        // Everything else requires JWT
                         .anyRequest().authenticated()
                 )
 

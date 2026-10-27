@@ -12,6 +12,7 @@ backend/.settings/
 backend/.idea/
 backend/.vscode/
 backend/*.log
+backend/build-log.txt
 backend/.env
 backend/.env.*
 
@@ -19,7 +20,12 @@ backend/.env.*
 .DS_Store
 Thumbs.db
 *.log
+package-lock.json
 
 # IDE
 .vscode/
 .idea/
+
+# Scratch / temp files
+frontend/public/test_dump.txt
+frontend/src/components/ex.js

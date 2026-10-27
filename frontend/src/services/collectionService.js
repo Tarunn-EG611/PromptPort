@@ -5,7 +5,6 @@ const getMyCollections = async () => {
   return response.data;
 };
 
-// Note: service uses PUT but controller maps @PostMapping for /sync.
 const syncCollection = async (id, promptIds) => {
   const response = await api.post(`/collections/${id}/sync`, promptIds);
   return response.data;

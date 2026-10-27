@@ -28,7 +28,7 @@ public class PromptVersion {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "template_id", nullable = false)
     private PromptTemplate template;
 }

@@ -13,9 +13,12 @@ import java.util.List;
 public class CategoryService {
 
     private final PromptCategoryRepository categoryRepository;
+    private final PromptTemplateRepository templateRepository;
+
     public CategoryService(PromptCategoryRepository categoryRepository,
                            PromptTemplateRepository templateRepository) {
         this.categoryRepository = categoryRepository;
+        this.templateRepository = templateRepository;
     }
 
     public List<PromptCategory> getAllCategories() {
@@ -27,7 +30,7 @@ public class CategoryService {
         PromptCategory category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
-        category.setTemplateCount((int)PromptTemplateRepository.countByCategoryId(categoryId));
+        category.setTemplateCount((int) templateRepository.countByCategoryId(categoryId));
         categoryRepository.save(category);
     }
 
@@ -35,7 +38,7 @@ public class CategoryService {
     public PromptCategory createCategory(String name) {
         PromptCategory category = new PromptCategory();
         category.setName(name);
-        category.setSlug(name.toLowerCase().replace(" ", "-"));
+        category.setSlug(name.toLowerCase(java.util.Locale.ROOT).replace(" ", "-"));
         category.setTemplateCount(0);
         return categoryRepository.save(category);
     }
@@ -46,7 +49,7 @@ public class CategoryService {
                 .orElseThrow(() -> new RuntimeException("Category not found"));
 
         category.setName(name);
-        category.setSlug(name.toLowerCase().replace(" ", "-"));
+        category.setSlug(name.toLowerCase(java.util.Locale.ROOT).replace(" ", "-"));
 
         return categoryRepository.save(category);
     }
