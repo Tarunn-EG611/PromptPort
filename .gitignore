@@ -26,6 +26,3 @@ package-lock.json
 .vscode/
 .idea/
 
-# Scratch / temp files
-frontend/public/test_dump.txt
-frontend/src/components/ex.js

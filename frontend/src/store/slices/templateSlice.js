@@ -220,6 +220,10 @@ export const templateSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       })
+<<<<<<< HEAD
+=======
+      // deleteVersion
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
       .addCase(deleteVersion.fulfilled, (state, action) => {
         if (state.currentTemplate && Array.isArray(state.currentTemplate.versions)) {
           state.currentTemplate.versions = state.currentTemplate.versions.filter(

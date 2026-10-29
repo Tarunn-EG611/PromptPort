@@ -55,6 +55,7 @@ const Login = () => {
 
         {isError && <ErrorHandler error={message} />}
 
+<<<<<<< HEAD
         <form onSubmit={onSubmit}>
           <div className="form-group">
             <label htmlFor="username">Username</label>
@@ -100,6 +101,19 @@ const Login = () => {
         </p>
       </section>
     </div>
+=======
+        <div className="form-group">
+          <button type="submit" className="btn-primary" disabled={isLoading}>
+            {isLoading ? 'Logging in…' : 'Login'}
+          </button>
+        </div>
+      </form>
+
+      <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.9rem', color: '#64748b' }}>
+        Don't have an account? <Link to="/register">Register</Link>
+      </p>
+    </section>
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
   );
 };
 

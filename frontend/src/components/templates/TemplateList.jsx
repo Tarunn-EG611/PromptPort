@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
+=======
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
 import { getPublicTemplates, reset } from '../../store/slices/templateSlice';
 import TemplateCard from './TemplateCard';
 import EmptyState from '../common/EmptyState';

@@ -35,6 +35,7 @@ const CollectionList = () => {
       ]);
       setCollections(collectionsRes.data);
       setUserTemplates(templatesRes.data);
+      console.log('userTemplates:', templatesRes.data);
     } catch (err) {
       setError(typeof err === 'string' ? err : 'Failed to load collections.');
     } finally {

@@ -224,6 +224,7 @@ const TemplateForm = ({ mode = 'create' }) => {
             />
           </div>
 
+<<<<<<< HEAD
           <div className="form-group">
             <label htmlFor="description">Description</label>
             <textarea
@@ -234,6 +235,14 @@ const TemplateForm = ({ mode = 'create' }) => {
               onChange={onChange}
             />
           </div>
+=======
+        {mode === 'create' && (
+          <AIPromptOptimizer
+            initialPrompt={initialPromptText}
+            onOptimize={onOptimize}
+          />
+        )}
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
 
           <div className="form-group">
             <label htmlFor="categoryId">Category</label>

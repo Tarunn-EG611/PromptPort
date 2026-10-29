@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
+<<<<<<< HEAD
 import { useParams, useNavigate, Link } from 'react-router-dom';
+=======
+import { useParams, useNavigate } from 'react-router-dom';
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
 import { useSelector, useDispatch } from 'react-redux';
 import {
   getTemplateById,
@@ -24,11 +28,18 @@ const TemplateDetails = () => {
   const [versionForm, setVersionForm] = useState({
     versionTag: '',
     promptText: '',
+<<<<<<< HEAD
     modelProvider: 'Google Gemini',
   });
   const [versionError, setVersionError] = useState('');
   const [versionSuccess, setVersionSuccess] = useState('');
   const [copiedPrompt, setCopiedPrompt] = useState(false);
+=======
+    modelProvider: '',
+  });
+  const [versionError, setVersionError] = useState('');
+  const [versionSuccess, setVersionSuccess] = useState('');
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
 
   useEffect(() => {
     dispatch(getTemplateById(id));
@@ -128,14 +139,20 @@ const TemplateDetails = () => {
         })
       ).unwrap();
 
+<<<<<<< HEAD
       setVersionSuccess('New version added successfully.');
       setVersionForm({ versionTag: '', promptText: '', modelProvider: 'Google Gemini' });
+=======
+      setVersionSuccess('Version added successfully.');
+      setVersionForm({ versionTag: '', promptText: '', modelProvider: '' });
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
       setShowVersionForm(false);
     } catch (err) {
       setVersionError(typeof err === 'string' ? err : 'Failed to add version.');
     }
   };
 
+<<<<<<< HEAD
   const onCopyActivePrompt = () => {
     if (!activePromptText) return;
     navigator.clipboard.writeText(activePromptText);
@@ -157,6 +174,8 @@ const TemplateDetails = () => {
 
   const wordCount = activePromptText ? activePromptText.trim().split(/\s+/).length : 0;
 
+=======
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
   return (
     <div className="template-details-container">
       <div className="breadcrumb-nav">
@@ -167,6 +186,7 @@ const TemplateDetails = () => {
         <span style={{ color: 'var(--text-main)' }}>{currentTemplate.title}</span>
       </div>
 
+<<<<<<< HEAD
       <div className="details-header">
         <div className="tag-pills-row">
           <span className="category-tag">
@@ -232,6 +252,15 @@ const TemplateDetails = () => {
           </div>
           <div className="prompt-showcase-body">{activePromptText}</div>
         </div>
+=======
+      {!isCreator && (
+        <button
+          className="btn-fork"
+          onClick={() => dispatch(forkTemplate(currentTemplate.id))}
+        >
+          Fork Template
+        </button>
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
       )}
 
       {isCreator && (
@@ -243,6 +272,7 @@ const TemplateDetails = () => {
 
       {versionSuccess && <div className="alert-success">{versionSuccess}</div>}
 
+<<<<<<< HEAD
       <div className="section-header-row" style={{ marginTop: '32px' }}>
         <h2>
           <span>Version History</span>
@@ -273,6 +303,41 @@ const TemplateDetails = () => {
                 <th>Prompt Snippet</th>
                 <th>Created</th>
                 {canDelete && <th>Actions</th>}
+=======
+      <h2>Version History</h2>
+      {versions.length > 0 ? (
+        <table className="version-history-table">
+          <thead>
+            <tr>
+              <th>Tag</th>
+              <th>Model</th>
+              <th>Prompt Snippet</th>
+              <th>Created At</th>
+              {canDelete && <th>Actions</th>}
+            </tr>
+          </thead>
+          <tbody>
+            {versions.map((version) => (
+              <tr key={version.id || version.versionTag}>
+                <td>{version.versionTag}</td>
+                <td>{version.modelProvider}</td>
+                <td>
+                  {version.promptText
+                    ? `${version.promptText.slice(0, 50)}...`
+                    : ''}
+                </td>
+                <td>{version.createdAt}</td>
+                {canDelete && (
+                  <td>
+                    <button
+                      className="btn-danger"
+                      onClick={() => onDeleteVersion(version.id)}
+                    >
+                      🗑
+                    </button>
+                  </td>
+                )}
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
               </tr>
             </thead>
             <tbody>
@@ -315,17 +380,28 @@ const TemplateDetails = () => {
 
       {showVersionForm && (
         <div className="add-version-form">
+<<<<<<< HEAD
           <h3>Publish New Prompt Version</h3>
+=======
+          <h3>Add New Prompt</h3>
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
 
           {versionError && <div className="alert-danger">{versionError}</div>}
 
           <form onSubmit={onVersionSubmit}>
             <div className="form-group">
+<<<<<<< HEAD
               <label>Version Tag</label>
               <input
                 type="text"
                 name="versionTag"
                 placeholder="e.g. v1.1.0"
+=======
+              <input
+                type="text"
+                name="versionTag"
+                placeholder="Version Tag (e.g. v1.0.2)"
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
                 value={versionForm.versionTag}
                 onChange={onVersionFormChange}
                 required
@@ -333,13 +409,27 @@ const TemplateDetails = () => {
             </div>
 
             <div className="form-group">
+<<<<<<< HEAD
               <label>Model Provider</label>
+=======
+              <textarea
+                name="promptText"
+                placeholder="Prompt Text"
+                value={versionForm.promptText}
+                onChange={onVersionFormChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
               <select
                 name="modelProvider"
                 value={versionForm.modelProvider}
                 onChange={onVersionFormChange}
                 required
               >
+<<<<<<< HEAD
                 <option value="Google Gemini">Google Gemini</option>
                 <option value="Claude">Claude</option>
                 <option value="ChatGPT">ChatGPT (OpenAI)</option>
@@ -359,6 +449,15 @@ const TemplateDetails = () => {
               />
             </div>
 
+=======
+                <option value="">-- Select Model Provider --</option>
+                <option value="Google Gemini">Google Gemini</option>
+                <option value="Claude">Claude</option>
+                <option value="ChatGPT">ChatGPT</option>
+              </select>
+            </div>
+
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
             <AIPromptOptimizer
               initialPrompt={versionForm.promptText}
               onOptimize={onVersionOptimize}
@@ -374,7 +473,11 @@ const TemplateDetails = () => {
                 onClick={() => {
                   setShowVersionForm(false);
                   setVersionError('');
+<<<<<<< HEAD
                   setVersionForm({ versionTag: '', promptText: '', modelProvider: 'Google Gemini' });
+=======
+                  setVersionForm({ versionTag: '', promptText: '', modelProvider: '' });
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
                 }}
               >
                 Cancel
@@ -384,9 +487,27 @@ const TemplateDetails = () => {
         </div>
       )}
 
+<<<<<<< HEAD
       <div style={{ marginTop: '36px', display: 'flex', gap: '12px' }}>
         <button className="btn-secondary" onClick={() => navigate(-1)}>
           ← Back
+=======
+      <div className="form-actions" style={{ marginTop: '24px' }}>
+        {user && (
+          <button
+            className="btn-primary"
+            onClick={() => {
+              setShowVersionForm((prev) => !prev);
+              setVersionError('');
+              setVersionSuccess('');
+            }}
+          >
+            {showVersionForm ? 'Cancel' : '+ Add New Prompt'}
+          </button>
+        )}
+        <button className="btn-secondary" onClick={() => navigate(-1)}>
+          Back
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
         </button>
       </div>
     </div>

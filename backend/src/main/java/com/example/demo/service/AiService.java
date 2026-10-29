@@ -25,7 +25,11 @@ public class AiService {
     private static final Logger log = LoggerFactory.getLogger(AiService.class);
 
     private static final String GEMINI_PATH =
+<<<<<<< HEAD
             "/v1beta/models/gemini-2.0-flash:generateContent";
+=======
+            "/v1beta/models/gemini-3.6-flash:generateContent";
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
 
     private final WebClient webClient;
 
@@ -41,11 +45,19 @@ public class AiService {
 
         HttpClient httpClient = HttpClient.create()
                 .resolver(DefaultAddressResolverGroup.INSTANCE)
+<<<<<<< HEAD
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 30000)
                 .responseTimeout(Duration.ofSeconds(120))
                 .doOnConnected(conn -> conn
                         .addHandlerLast(new ReadTimeoutHandler(120))
                         .addHandlerLast(new WriteTimeoutHandler(30)));
+=======
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 15000)
+                .responseTimeout(Duration.ofSeconds(45))
+                .doOnConnected(conn -> conn
+                        .addHandlerLast(new ReadTimeoutHandler(45))
+                        .addHandlerLast(new WriteTimeoutHandler(45)));
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
 
         this.webClient = builder
                 .baseUrl("https://generativelanguage.googleapis.com")
@@ -107,19 +119,29 @@ public class AiService {
                             new ParameterizedTypeReference<Map<String, Object>>() {
                             }
                     )
+<<<<<<< HEAD
                     .timeout(Duration.ofSeconds(120))
+=======
+                    .timeout(Duration.ofSeconds(60))
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
                     .block();
 
             String text = extractText(response);
 
             return text == null ? "No response from AI." : text;
 
+<<<<<<< HEAD
         } catch (Exception e) {
             log.error("Error calling Gemini API: {}", e.getClass().getSimpleName(), e);
             Throwable root = e;
             while (root.getCause() != null) root = root.getCause();
             String msg = root.getMessage() != null ? root.getMessage() : root.getClass().getSimpleName();
             return "Error calling AI: " + msg;
+=======
+        } catch (RuntimeException e) {
+            log.error("Error calling Gemini API", e);
+            return "Error calling AI: " + e.getMessage();
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
         }
     }
 

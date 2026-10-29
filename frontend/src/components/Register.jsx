@@ -5,6 +5,7 @@ import { register, reset } from '../store/slices/authSlice';
 import ErrorHandler from './common/ErrorHandler';
 
 const Register = () => {
+<<<<<<< HEAD
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -12,11 +13,15 @@ const Register = () => {
     confirmPassword: '',
     role: 'PROMPT_ENGINEER',
   });
+=======
+  const [formData, setFormData] = useState({ username: '', email: '', password: '', confirmPassword: '', role: 'PROMPT_ENGINEER' });
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
   const { username, email, password, confirmPassword, role } = formData;
   const [passwordError, setPasswordError] = useState('');
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+<<<<<<< HEAD
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
@@ -28,6 +33,13 @@ const Register = () => {
     return () => {
       dispatch(reset());
     };
+=======
+  const { user, isLoading, isError, isSuccess, message } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (isSuccess || user) navigate('/');
+    return () => { dispatch(reset()); };
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
   }, [user, isSuccess, navigate, dispatch]);
 
   const onChange = (e) => {
@@ -45,6 +57,7 @@ const Register = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="auth-page-wrapper">
       <section className="login-container">
         <div className="login-header">
@@ -141,6 +154,78 @@ const Register = () => {
         </p>
       </section>
     </div>
+=======
+    <section className="login-container">
+      <h2>Create an Account</h2>
+
+      {isError && <ErrorHandler error={message} />}
+      {passwordError && <ErrorHandler error={passwordError} />}
+
+      <form onSubmit={onSubmit}>
+        <div className="form-group">
+          <input
+            type="text"
+            name="username"
+            value={username}
+            placeholder="Username"
+            required
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <input
+            type="email"
+            name="email"
+            value={email}
+            placeholder="Email"
+            required
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <select name="role" value={role} onChange={onChange} required>
+            <option value="PROMPT_ENGINEER">Prompt Engineer</option>
+            <option value="PROMPT_COLLECTOR">Prompt Collector</option>
+            <option value="TEAM_LEAD">Team Lead</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <input
+            type="password"
+            name="password"
+            value={password}
+            placeholder="Password"
+            required
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <input
+            type="password"
+            name="confirmPassword"
+            value={confirmPassword}
+            placeholder="Confirm Password"
+            required
+            onChange={onChange}
+          />
+        </div>
+
+        <div className="form-group">
+          <button type="submit" className="btn-primary" disabled={isLoading}>
+            {isLoading ? 'Creating account…' : 'Register'}
+          </button>
+        </div>
+      </form>
+
+      <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '0.9rem', color: '#64748b' }}>
+        Already have an account? <Link to="/login">Login</Link>
+      </p>
+    </section>
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
   );
 };
 

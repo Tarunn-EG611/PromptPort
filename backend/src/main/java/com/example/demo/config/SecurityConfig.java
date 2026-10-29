@@ -32,6 +32,11 @@ public class SecurityConfig {
             throws Exception {
 
         http
+<<<<<<< HEAD
+=======
+                // API is stateless (JWT via Authorization header) — CSRF tokens are
+                // required only for state-changing endpoints; auth endpoints are excluded.
+>>>>>>> fd936892dfefaa27be028f9cc03c24a107783add
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/api/**")
                 )
